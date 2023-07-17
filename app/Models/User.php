@@ -43,11 +43,4 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // user has many urls
-    public function urls()
-    {
-        return $this->hasMany(Url::class);
-    }
-
-
 }

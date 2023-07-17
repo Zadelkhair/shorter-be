@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UrlController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,52 +22,25 @@ Route::post('/login', [AuthController::class, 'login']);
 // register
 Route::post('/register', [AuthController::class, 'register']);
 
+// get products
+Route::get('/products', [ProductController::class, 'index']);
 
+// auth middleware
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // logout
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    // get user urls
-    Route::get('/user/{id}/urls', [UrlController::class, 'userUrls']);
-
-    // update url
-    Route::put('/urls/{id}', [UrlController::class, 'update']);
-
-    // url shortener
-    Route::post('/shorten', [UrlController::class, 'shorten']);
-
-    // get all urls
-    Route::get('/urls', [UrlController::class, 'index']);
-
-    // delete url
-    Route::delete('/urls/{id}', [UrlController::class, 'destroy']);
-
-    // load views
-    Route::get('/urls/{id}/views', [UrlController::class, 'views']);
-
-});
-
-// prefix: /nonloggedinuser
-Route::group(['prefix' => 'nonloggedinuser'], function () {
-
-    // url shortener
-    Route::post('/shorten', [UrlController::class, 'shorten']);
-
-    // get all urls
-    Route::get('/urls', [UrlController::class, 'index']);
-
-    // delete url
-    Route::delete('/urls/{id}', [UrlController::class, 'destroy']);
-
-    // load views
-    Route::get('/urls/{id}/views', [UrlController::class, 'views']);
-
 });
 
 Route::group(['middleware' => ['auth:sanctum','role:admin']], function () {
 
-    // get url
-    Route::get('/urls/{id}', [UrlController::class, 'show']);
+    // create product
+    Route::post('/products', [ProductController::class, 'store']);
+    // update product
+    Route::put('/products/{id}', [ProductController::class, 'update']);
+    // delete product
+    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
 
 });
+
